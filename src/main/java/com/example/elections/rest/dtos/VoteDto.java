@@ -19,9 +19,6 @@ import java.time.LocalDate;
 public class VoteDto {
 
     @NotEmpty
-    private LocalDate date;
-
-    @NotEmpty
     private Station station;
 
     @NotEmpty

@@ -1,6 +1,8 @@
 package com.example.elections.model;
 
 import com.example.elections.model.common.JPA;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,14 +18,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Vote extends JPA {
 
-    @Column
-    private LocalDate date;
-
     @ManyToOne(fetch =  FetchType.EAGER)
     private Station station;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     private ElectionProcess electionProcess;
-
 
 }

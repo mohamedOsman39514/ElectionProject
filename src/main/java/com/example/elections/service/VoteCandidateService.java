@@ -1,6 +1,5 @@
 package com.example.elections.service;
 
-import com.example.elections.model.Vote;
 import com.example.elections.model.VoteCandidate;
 import com.example.elections.repository.VoteCandidateRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +31,9 @@ public class VoteCandidateService {
     public VoteCandidate save(VoteCandidate voteCandidate) {
         return voteCandidateRepository.save(voteCandidate);
     }
+
+    public List<?> getVotes() {
+        return voteCandidateRepository.findVotes();
+    }
+
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/voteCandidate")
 public class VoteCandidateController {
 
     @Autowired
@@ -27,6 +28,12 @@ public class VoteCandidateController {
     public ResponseEntity<List<VoteCandidateDto>> getAllVoteCandidates() {
         List<VoteCandidateDto> voteCandidateDtoList = voteCandidateMapper
                 .toVoteCandidateDtos(voteCandidateService.getAllVoteCandidates());
+        return ResponseEntity.ok(voteCandidateDtoList);
+    }
+
+    @GetMapping("/results")
+    public ResponseEntity<List<?>> getAllVotes() {
+        List<?> voteCandidateDtoList = voteCandidateService.getVotes();
         return ResponseEntity.ok(voteCandidateDtoList);
     }
 
