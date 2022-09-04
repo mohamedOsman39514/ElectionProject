@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -23,6 +24,7 @@ public class VoterDto {
 
     @NotEmpty
     @Email(message = "email required")
+    @UniqueElements
     private String email;
 
     @NotEmpty
