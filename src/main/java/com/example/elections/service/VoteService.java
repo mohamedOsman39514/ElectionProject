@@ -1,7 +1,6 @@
 package com.example.elections.service;
 
 import com.example.elections.model.Vote;
-import com.example.elections.model.Voter;
 import com.example.elections.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
