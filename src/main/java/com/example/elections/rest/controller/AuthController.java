@@ -1,8 +1,8 @@
 package com.example.elections.rest.controller;
 
 
-import com.example.elections.config.jwt.JwtResponse;
-import com.example.elections.config.jwt.JwtUtil;
+import com.example.elections.security.jwt.JwtResponse;
+import com.example.elections.security.jwt.JwtUtil;
 import com.example.elections.model.Voter;
 import com.example.elections.service.VoterService;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -65,5 +65,3 @@ public class AuthController {
     }
 
 }
-
-

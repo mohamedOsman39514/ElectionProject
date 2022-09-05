@@ -1,4 +1,4 @@
-package com.example.elections.config.jwt;
+package com.example.elections.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

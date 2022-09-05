@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.config.util.PasswordUtil;
+import com.example.elections.security.util.PasswordUtil;
 import com.example.elections.model.PasswordResetToken;
 import com.example.elections.model.Voter;
 import com.example.elections.rest.dtos.VoterDto;

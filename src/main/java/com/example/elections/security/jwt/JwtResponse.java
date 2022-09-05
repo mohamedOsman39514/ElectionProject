@@ -1,4 +1,4 @@
-package com.example.elections.config.jwt;
+package com.example.elections.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

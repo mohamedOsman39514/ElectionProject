@@ -1,4 +1,4 @@
-package com.example.elections.config.util;
+package com.example.elections.security.util;
 
 public class ResponseFile {
     private String name;

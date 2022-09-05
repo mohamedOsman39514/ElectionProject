@@ -1,7 +1,7 @@
 package com.example.elections.config;
 
 
-import com.example.elections.config.jwt.JwtFilter;
+import com.example.elections.security.jwt.JwtFilter;
 import com.example.elections.service.VoterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private VoterService userService;
