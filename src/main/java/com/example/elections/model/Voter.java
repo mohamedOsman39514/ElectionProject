@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "voter")
@@ -29,5 +31,9 @@ public class Voter extends JPA{
 
     @Column
     private Boolean voter_vote = false;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "roles_id")
+    private List<Role> roles = new ArrayList<>();
 
 }

@@ -1,5 +1,6 @@
 package com.example.elections.rest.dtos;
 
+import com.example.elections.model.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,8 @@ import org.hibernate.validator.constraints.UniqueElements;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,5 +39,7 @@ public class VoterDto {
 
     @NotEmpty
     private Boolean voter_vote = false;
+
+    private List<Role> roles = new ArrayList<>();
 
 }
