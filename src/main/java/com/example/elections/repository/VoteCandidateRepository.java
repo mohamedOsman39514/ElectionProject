@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Long> {
 
-    @Query(value = "SELECT  c.name, count(*) FROM Vote_Candidate u JOIN" +
+    @Query(value = "SELECT  c.name, count(u) FROM Vote_Candidate u JOIN" +
             " Candidates c ON c.id= u.candidate_id" +
             " GROUP BY c.name", nativeQuery = true)
     List<?> findVotes();
 
-    @Query(value = "SELECT  u.name FROM Voter u WHERE u.voter_vote = true", nativeQuery = true)
+    @Query(value = "SELECT  u.name FROM Voter u WHERE u.voter_vote = true")
     List<?> findAllVoters();
 
 }
