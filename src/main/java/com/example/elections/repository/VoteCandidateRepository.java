@@ -14,4 +14,7 @@ public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Lo
             " GROUP BY c.name", nativeQuery = true)
     List<?> findVotes();
 
+    @Query(value = "SELECT  u.name FROM Voter u WHERE u.voter_vote = true", nativeQuery = true)
+    List<?> findAllVoters();
+
 }

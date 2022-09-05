@@ -36,4 +36,8 @@ public class VoteCandidateService {
         return voteCandidateRepository.findVotes();
     }
 
+    public List<?> getAllVoters() {
+        return voteCandidateRepository.findAllVoters();
+    }
+
 }
