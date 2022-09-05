@@ -37,12 +37,12 @@ public class VoteCandidateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteCandidateDto> getVoteCandidateDto(@PathVariable Long id)
+    public ResponseEntity<?> getVoteCandidateDto(@PathVariable Long id)
             throws ResourceNotFound {
         VoteCandidate voteCandidate = voteCandidateService.getVoteCandidate(id)
                 .orElseThrow(() -> new ResourceNotFound("Vote Candidate Not Found"));
         VoteCandidateDto voteCandidateDto = voteCandidateMapper.toVoteCandidateDto(voteCandidate);
-        return ResponseEntity.ok(voteCandidateDto);
+        return ResponseEntity.status(HttpStatus.FOUND).body(voteCandidateDto);
     }
 
     @PostMapping
@@ -56,7 +56,7 @@ public class VoteCandidateController {
             voteCandidateService.save(voteCandidate);
             return ResponseEntity.status(HttpStatus.CREATED).body(voteCandidateDto);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("You are voted before");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are voted before");
     }
 
     @PutMapping("/{id}")
