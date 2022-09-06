@@ -40,6 +40,9 @@ public class VoterDto {
     @NotEmpty
     private Boolean voter_vote = false;
 
+    @NotEmpty
+    private Boolean revocation = false;
+
     private List<Role> roles = new ArrayList<>();
 
 }

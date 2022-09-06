@@ -32,6 +32,9 @@ public class Voter extends JPA{
     @Column
     private Boolean voter_vote = false;
 
+    @Column
+    private Boolean revocation = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "roles_id")
     private List<Role> roles = new ArrayList<>();

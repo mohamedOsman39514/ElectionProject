@@ -62,6 +62,7 @@ public class VoterController {
     @PostMapping("/register")
     public ResponseEntity<?> createVoter(@RequestBody VoterDto voterDto) {
         Voter voter = voterMapper.toVoter(voterDto);
+        voter.setCreatedBy(voterDto.getName());
         voterService.register(voter);
         return ResponseEntity.status(HttpStatus.CREATED).body(voter);
     }
@@ -70,12 +71,10 @@ public class VoterController {
     public ResponseEntity<?> forgetPassword(@RequestBody Voter voter, HttpServletRequest request )
             throws ResourceNotFound {
         Voter user = voterService.findByEmail(voter.getEmail());
-        System.out.println("\n\n\n USER ||  "+user.getEmail()+"\n\n\n");
         if (user == null) {
             throw new ResourceNotFound("Not Found");
         }
         String token = UUID.randomUUID().toString();
-        System.out.println("Reset Password:  "+token);
         passwordTokenService.createPasswordResetTokenForUser(user, token);
         return ResponseEntity.ok().body(token);
     }
@@ -99,10 +98,17 @@ public class VoterController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody VoterDto voterDto)
             throws ResourceNotFound {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Voter user = voterService.findByEmail(email);
+
         Voter voter = voterMapper.toVoter(voterDto);
         Voter voterId = voterService.getVoter(id)
                 .orElseThrow(()->new ResourceNotFound("Voter Not Found"));
         voterId.setName(voter.getName()!=null ? voter.getName() : voterId.getName());
+        voterId.setEmail(voter.getEmail()!=null ? voter.getEmail() : voterId.getEmail());
+        voterId.setNational_id(voter.getNational_id()!=null ? voter.getNational_id()
+                : voterId.getNational_id());
+        voterId.setUpdatedBy(user.getName());
         voterService.save(voterId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(voterId);
     }

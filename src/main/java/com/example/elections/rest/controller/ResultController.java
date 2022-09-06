@@ -28,4 +28,11 @@ public class ResultController {
         List<?> voteCandidateDtoList = voteCandidateService.getAllVoters();
         return ResponseEntity.ok(voteCandidateDtoList);
     }
+
+    @GetMapping("/revocations")
+    public ResponseEntity<List<?>> getNumberOfRevocation() {
+        List<?> voteCandidateDtoList = voteCandidateService.getAllRevocations();
+        return ResponseEntity.ok(voteCandidateDtoList);
+    }
+
 }

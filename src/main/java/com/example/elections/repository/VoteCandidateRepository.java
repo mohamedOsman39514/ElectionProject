@@ -17,4 +17,7 @@ public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Lo
     @Query(value = "SELECT  u.name FROM Voter u WHERE u.voter_vote = true")
     List<?> findAllVoters();
 
+    @Query(value = "SELECT  u.name FROM Voter u WHERE u.revocation = true")
+    List<?> findAllRevocation();
+
 }

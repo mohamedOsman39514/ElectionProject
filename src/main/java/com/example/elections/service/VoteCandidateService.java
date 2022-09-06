@@ -40,4 +40,8 @@ public class VoteCandidateService {
         return voteCandidateRepository.findAllVoters();
     }
 
+    public List<?> getAllRevocations() {
+        return voteCandidateRepository.findAllRevocation();
+    }
+
 }

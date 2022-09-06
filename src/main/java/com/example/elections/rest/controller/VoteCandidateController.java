@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,6 +29,9 @@ public class VoteCandidateController {
 
     @Autowired
     private VoterService voterService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @GetMapping
     public ResponseEntity<List<VoteCandidateDto>> getAllVoteCandidates() {
@@ -49,12 +53,18 @@ public class VoteCandidateController {
     public ResponseEntity<?> createVoteCandidateDto(@RequestBody VoteCandidateDto voteCandidateDto) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Voter voterEmail = voterService.findByEmail(email);
-        if (!voterEmail.getVoter_vote()) {
+        String isRevocation = request.getHeader("revocation");
+
+        if (!voterEmail.getVoter_vote() && isRevocation == null && !voterEmail.getRevocation()) {
             voterEmail.setVoter_vote(true);
             voterService.save(voterEmail);
             VoteCandidate voteCandidate = voteCandidateMapper.toCandidate(voteCandidateDto);
             voteCandidateService.save(voteCandidate);
             return ResponseEntity.status(HttpStatus.CREATED).body(voteCandidateDto);
+        } else if (isRevocation!= null && isRevocation.equals("true")) {
+            voterEmail.setRevocation(true);
+            voterService.save(voterEmail);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("You Are Revocation");
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are voted before");
     }
@@ -81,6 +91,7 @@ public class VoteCandidateController {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Voter voterEmail = voterService.findByEmail(email);
         voterEmail.setVoter_vote(false);
+        voterEmail.setRevocation(false);
         voterService.save(voterEmail);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
