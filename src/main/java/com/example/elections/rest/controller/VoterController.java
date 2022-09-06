@@ -44,7 +44,7 @@ public class VoterController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<?> findByRut(@PathVariable String email){
+    public ResponseEntity<?> findByEmail(@PathVariable String email){
         Voter voter = voterService.findByEmail(email);
         if (voter == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
         return ResponseEntity.ok().body(voter);

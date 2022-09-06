@@ -2,8 +2,11 @@ package com.example.elections.model;
 
 import com.example.elections.model.common.JPA;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity

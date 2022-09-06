@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,26 +22,23 @@ import java.util.List;
 @AllArgsConstructor
 public class VoterDto {
 
-    @NotEmpty
-    @Size(min = 2, message = "voter name should have at least 2 characters")
+    @NotNull
     private String name;
 
-    @NotEmpty
-    @Email(message = "email required")
-    @UniqueElements
+    @NotNull
     private String email;
 
-    @NotEmpty
+    @NotNull
     @Size(min = 8, message = "password should have at least 8 characters")
     private String password;
 
-    @NotEmpty
+    @NotNull
     private Integer national_id;
 
-    @NotEmpty
+    @NotNull
     private Boolean voter_vote = false;
 
-    @NotEmpty
+    @NotNull
     private Boolean revocation = false;
 
     private List<Role> roles = new ArrayList<>();

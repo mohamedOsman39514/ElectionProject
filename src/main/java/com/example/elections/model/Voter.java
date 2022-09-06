@@ -2,9 +2,11 @@ package com.example.elections.model;
 
 import com.example.elections.model.common.JPA;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class Voter extends JPA{
     private String name;
 
     @Column
+    @Email( message = "not valid")
+    @UniqueElements
     private String email;
 
     @Column
