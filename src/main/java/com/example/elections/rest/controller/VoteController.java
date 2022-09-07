@@ -34,7 +34,7 @@ public class VoteController {
     public ResponseEntity<VoteDto> getVoteDto(@PathVariable Long id)
             throws ResourceNotFound {
         Vote vote = voteService.getVote(id)
-                .orElseThrow(() -> new ResourceNotFound("Vote Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote of id "+ id +" Not Found"));
         VoteDto voteDto = voteMapper.toVoteDto(vote);
         return ResponseEntity.ok(voteDto);
     }
@@ -51,7 +51,7 @@ public class VoteController {
             throws ResourceNotFound {
         Vote vote = voteMapper.toVote(voteDto);
         Vote voteId = voteService.getVote(id)
-                .orElseThrow(()->new ResourceNotFound("Vote Not Found"));
+                .orElseThrow(()->new ResourceNotFound("Vote of id "+ id +" Not Found"));
         voteId.setStation(vote.getStation()!=null ? vote.getStation() : voteId.getStation());
         voteId.setElectionProcess(vote.getElectionProcess()!=null ? vote.getElectionProcess()
                 : voteId.getElectionProcess());

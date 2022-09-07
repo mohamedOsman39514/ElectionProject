@@ -22,9 +22,9 @@ public class Voter extends JPA{
     @Column
     private String name;
 
-    @Column
+    @Column(unique = true)
     @Email( message = "not valid")
-    @UniqueElements
+//    @UniqueElements
     private String email;
 
     @Column

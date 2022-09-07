@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,8 +40,9 @@ public class RoleController {
     @GetMapping("/{id}")
     public ResponseEntity<RoleDto> getRoleById(@PathVariable(value = "id") Long id)
             throws ResourceNotFound {
-        Optional<Role> role = roleService.findById(id);
-        RoleDto roleDTO = roleMapper.toRoleDTO(role.get());
+        Role role = roleService.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Role of id "+ id +" Not Found"));
+        RoleDto roleDTO = roleMapper.toRoleDTO(role);
         return ResponseEntity.ok(roleDTO);
     }
 
@@ -50,7 +50,7 @@ public class RoleController {
     public ResponseEntity<RoleDto> update(@PathVariable Long id,	@RequestBody RoleDto roleDTO) throws ResourceNotFound {
         Role role = roleMapper.toRole(roleDTO);
         Role roleId = roleService.findById(id)
-                .orElseThrow(()->new ResourceNotFound("Role Not Found"));
+                .orElseThrow(()-> new ResourceNotFound("Role of id "+ id +" Not Found"));
         role.setId(id);
         role.setName(role.getName()!=null ? role.getName() : roleId.getName());
         roleService.save(role);

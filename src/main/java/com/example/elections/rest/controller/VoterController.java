@@ -54,7 +54,7 @@ public class VoterController {
     public ResponseEntity<?> getVoter(@PathVariable Long id)
             throws ResourceNotFound {
         Voter voter = voterService.getVoter(id)
-                .orElseThrow(() -> new ResourceNotFound("Voter Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Voter Position of id "+ id +" Not Found"));
         VoterDto voterDto = voterMapper.toVoterDto(voter);
         return ResponseEntity.ok(voterDto);
     }
@@ -72,7 +72,7 @@ public class VoterController {
             throws ResourceNotFound {
         Voter user = voterService.findByEmail(voter.getEmail());
         if (user == null) {
-            throw new ResourceNotFound("Not Found");
+            throw new ResourceNotFound("Voter of email: "+ voter.getEmail() +" Not Found");
         }
         String token = UUID.randomUUID().toString();
         passwordTokenService.createPasswordResetTokenForUser(user, token);
@@ -103,7 +103,7 @@ public class VoterController {
 
         Voter voter = voterMapper.toVoter(voterDto);
         Voter voterId = voterService.getVoter(id)
-                .orElseThrow(()->new ResourceNotFound("Voter Not Found"));
+                .orElseThrow(()->new ResourceNotFound("Voter of id "+ id +" Not Found"));
         voterId.setName(voter.getName()!=null ? voter.getName() : voterId.getName());
         voterId.setEmail(voter.getEmail()!=null ? voter.getEmail() : voterId.getEmail());
         voterId.setNational_id(voter.getNational_id()!=null ? voter.getNational_id()

@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/candidate")
-//pm.environment.set("jwt",pm.response.json().jwtToken);
 public class CandidateController {
 
     @Autowired
@@ -35,10 +33,11 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CandidateDto> getCandidateById(@PathVariable(value = "id") Long Id)
+    public ResponseEntity<CandidateDto> getCandidateById(@PathVariable(value = "id") Long id)
             throws ResourceNotFound {
-        Optional<Candidate> candidate = candidateService.getCandidate(Id);
-        CandidateDto candidateDto = candidateMapper.toCandidateDto(candidate.get());
+        Candidate candidate = candidateService.getCandidate(id)
+                .orElseThrow(()->new ResourceNotFound("The Candidate of id "+ id +" Not Found"));
+        CandidateDto candidateDto = candidateMapper.toCandidateDto(candidate);
         return ResponseEntity.ok(candidateDto);
     }
 
@@ -55,7 +54,7 @@ public class CandidateController {
             throws ResourceNotFound {
         Candidate candidate = candidateMapper.toCandidate(candidateDto);
         Candidate candidateId = candidateService.getCandidate(id)
-                .orElseThrow(()->new ResourceNotFound("Candidate Not Found"));
+                .orElseThrow(()-> new ResourceNotFound("Vote Candidate of id "+ id +" Not Found"));
 
         candidateId.setName(candidate.getName()!=null ? candidate.getName() : candidateId.getName());
         candidateId.setNickname(candidate.getNickname()!=null ? candidate.getNickname()

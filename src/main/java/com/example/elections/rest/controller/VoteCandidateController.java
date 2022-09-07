@@ -44,7 +44,7 @@ public class VoteCandidateController {
     public ResponseEntity<?> getVoteCandidateDto(@PathVariable Long id)
             throws ResourceNotFound {
         VoteCandidate voteCandidate = voteCandidateService.getVoteCandidate(id)
-                .orElseThrow(() -> new ResourceNotFound("Vote Candidate Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote Candidate of id "+ id +" Not Found"));
         VoteCandidateDto voteCandidateDto = voteCandidateMapper.toVoteCandidateDto(voteCandidate);
         return ResponseEntity.status(HttpStatus.FOUND).body(voteCandidateDto);
     }
@@ -74,7 +74,7 @@ public class VoteCandidateController {
             throws ResourceNotFound {
         VoteCandidate voteCandidate = voteCandidateMapper.toCandidate(voteCandidateDto);
         VoteCandidate voteCandidateId = voteCandidateService.getVoteCandidate(id)
-                .orElseThrow(() -> new ResourceNotFound("Vote Candidate Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote Candidate of id "+ id +" Not Found"));
         voteCandidateId.setPosition(voteCandidate.getPosition() != null ? voteCandidate.getPosition()
                 : voteCandidateId.getPosition());
         voteCandidateId.setCandidate(voteCandidate.getCandidate() != null ? voteCandidate.getCandidate()

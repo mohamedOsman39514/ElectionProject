@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ public class PartyController {
     public ResponseEntity<PartyDto> getPartyDto(@PathVariable Long id)
             throws ResourceNotFound {
         Party party = partyService.getParty(id)
-                .orElseThrow(() -> new ResourceNotFound("Party Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Party of id "+ id +" Not Found"));
         PartyDto partyDto = partyMapper.toPartyDto(party);
         return ResponseEntity.ok(partyDto);
     }
@@ -53,7 +52,7 @@ public class PartyController {
             throws ResourceNotFound {
         Party party = partyMapper.toParty(partyDto);
         Party partyId = partyService.getParty(id)
-                .orElseThrow(()->new ResourceNotFound("Party Not Found"));
+                .orElseThrow(()->new ResourceNotFound("Party of id "+ id +" Not Found"));
         partyId.setName(party.getName()!=null ? party.getName() : partyId.getName());
 //        party.setUpdatedBy(party.getUpdatedBy()!=null ? party.getUpdatedBy() : partyId.getUpdatedBy());
 //        party.setCreatedBy(party.getCreatedBy()!=null ? party.getCreatedBy() : partyId.getCreatedBy());

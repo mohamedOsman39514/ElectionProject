@@ -36,7 +36,7 @@ public class ElectionProcessController {
     public ResponseEntity<ElectionProcessDto> getElectionProcessDto(@PathVariable Long id)
             throws ResourceNotFound {
         ElectionProcess electionProcess = electionProcessService.getElectionProcess(id)
-                .orElseThrow(() -> new ResourceNotFound("election process Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Election Process of id "+ id +" Not Found"));
         ElectionProcessDto electionProcessDto = electionProcessMapper.toElectionProcessDto(electionProcess);
         return ResponseEntity.ok(electionProcessDto);
     }
@@ -54,7 +54,7 @@ public class ElectionProcessController {
 
         ElectionProcess electionProcess = electionProcessMapper.toElectionProcess(electionProcessDto);
         ElectionProcess electionProcessId = electionProcessService.getElectionProcess(id)
-                .orElseThrow(()->new ResourceNotFound("election process Not Found"));
+                .orElseThrow(()->new ResourceNotFound("Election Process of id "+ id +" Not Found"));
         electionProcess.setId(id);
         electionProcessId.setName(electionProcess.getName()!=null ? electionProcess.getName()
                 : electionProcessId.getName());

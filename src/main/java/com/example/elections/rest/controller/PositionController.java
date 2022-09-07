@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,11 +31,11 @@ public class PositionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PositionDto> getPositionById(@PathVariable(value = "id") Long Id)
+    public ResponseEntity<PositionDto> getPositionById(@PathVariable(value = "id") Long id)
             throws ResourceNotFound {
-        Optional<Position> position = Optional.ofNullable(positionService.findById(Id)
-                .orElseThrow(() -> new ResourceNotFound("Position Not Found")));
-        PositionDto positionDto = positionMapper.toPositionDto(position.get());
+        Position position = positionService.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Position of id "+ id +" Not Found"));
+        PositionDto positionDto = positionMapper.toPositionDto(position);
         return ResponseEntity.ok(positionDto);
     }
 
@@ -52,7 +51,7 @@ public class PositionController {
             throws ResourceNotFound {
         Position position = positionMapper.toPosition(positionDto);
         Position positionId = positionService.findById(id)
-                .orElseThrow(()->new ResourceNotFound("Position Not Found"));
+                .orElseThrow(()->new ResourceNotFound("Position of id "+ id +" Not Found"));
         position.setId(id);
         position.setName(position.getName()!=null ? position.getName() : positionId.getName());
         position.setSets(position.getSets()!=null ? position.getSets() : positionId.getSets());

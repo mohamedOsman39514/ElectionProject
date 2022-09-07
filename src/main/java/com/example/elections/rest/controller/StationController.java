@@ -34,7 +34,7 @@ public class StationController {
     public ResponseEntity<StationDto> getStationDto(@PathVariable Long id)
             throws ResourceNotFound {
         Station station = stationService.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Station Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Station of id "+ id +" Not Found"));
         StationDto stationDto = stationMapper.toStationDto(station);
         return ResponseEntity.ok(stationDto);
     }
@@ -51,7 +51,7 @@ public class StationController {
             throws ResourceNotFound {
         Station station = stationMapper.toStation(stationDto);
         Station stationId = stationService.findById(id)
-                .orElseThrow(()->new ResourceNotFound("Party Not Found"));
+                .orElseThrow(()-> new ResourceNotFound("Station of id "+ id +" Not Found"));
         stationId.setNumber(station.getNumber()!=null ? station.getNumber() : stationId.getNumber());
         stationService.save(stationId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(stationId);

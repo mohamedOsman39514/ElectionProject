@@ -15,19 +15,22 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-//@ConfigurationProperties(prefix = "application.jwt")
 public class JwtUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
     public static final long JWT_TOKEN_VALIDITY = 0;
 
-    //    @Value("${jwt.secret}")
-    private String secret = "secret";
+    @Value("${jwt.secret}")
+    private String secret;
 
     private int refreshExpirationDateInMs;
 
-    private int key;
+    @Value("${jwt.expirationRefreshToken}")
+    private int  expirationRefreshToken;
+
+    @Value("${jwt.expirationToken}")
+    private int expirationToken;
 
 
     //retrieve username from jwt token
@@ -76,11 +79,10 @@ public class JwtUtil implements Serializable {
     //   compaction of the JWT to a URL-safe string
     //
 
-//    @Value("${jwt.key}")
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationToken))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
@@ -89,7 +91,7 @@ public class JwtUtil implements Serializable {
     public String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + (5*60*1000)))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationRefreshToken))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
     ////////////////////////////////////////////////////////////////
