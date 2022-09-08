@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Response;
 import com.example.elections.model.VotePosition;
 import com.example.elections.rest.dtos.VotePositionDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -63,8 +66,11 @@ public class VotePositionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
+        VotePosition votePositionId = votePositionService.getVotePosition(id)
+                .orElseThrow(()->new ResourceNotFound("Vote Position of id "+ id +" Not Found"));
         votePositionService.delete(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
+
     }
 }

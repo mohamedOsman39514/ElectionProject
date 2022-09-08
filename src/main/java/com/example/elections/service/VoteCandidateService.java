@@ -44,4 +44,8 @@ public class VoteCandidateService {
         return voteCandidateRepository.findAllRevocation();
     }
 
+    public List<?> getVoteId(Long id) {
+        return voteCandidateRepository.findVoteId(id);
+    }
+
 }

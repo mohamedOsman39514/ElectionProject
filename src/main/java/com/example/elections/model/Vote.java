@@ -18,6 +18,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Vote extends JPA {
 
+    @Column
+    private Boolean revocation = false;
+
     @ManyToOne(fetch =  FetchType.EAGER)
     private Station station;
 

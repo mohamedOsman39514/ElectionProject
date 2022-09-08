@@ -15,6 +15,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class VoteCandidate  extends JPA{
 
+    @Column
+    private Boolean revocation = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Position position;
 

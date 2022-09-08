@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VoteDto {
+
+    private Boolean revocation = false;
 
     @NotEmpty
     private Station station;

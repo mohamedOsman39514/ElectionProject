@@ -18,6 +18,8 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class VoteCandidateDto {
 
+    private Boolean revocation = false;
+
     @NotEmpty
     private Position position;
 

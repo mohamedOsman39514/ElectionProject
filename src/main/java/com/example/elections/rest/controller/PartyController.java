@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Response;
 import com.example.elections.model.Party;
 import com.example.elections.rest.dtos.PartyDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -61,8 +62,10 @@ public class PartyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
+        Party partyId = partyService.getParty(id)
+                .orElseThrow(()->new ResourceNotFound("Party of id "+ id +" Not Found"));
         partyService.delete(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
     }
 }

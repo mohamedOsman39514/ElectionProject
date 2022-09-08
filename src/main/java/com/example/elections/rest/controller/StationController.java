@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Response;
 import com.example.elections.model.Station;
 import com.example.elections.rest.dtos.StationDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -58,8 +59,10 @@ public class StationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
+        Station stationId = stationService.findById(id)
+                .orElseThrow(()-> new ResourceNotFound("Station of id "+ id +" Not Found"));
         stationService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
     }
 }

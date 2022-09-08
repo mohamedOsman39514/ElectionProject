@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Response;
 import com.example.elections.model.Role;
 import com.example.elections.rest.dtos.RoleDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -58,8 +59,10 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
+        Role role = roleService.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Role of id "+ id +" Not Found"));
         roleService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
     }
 }

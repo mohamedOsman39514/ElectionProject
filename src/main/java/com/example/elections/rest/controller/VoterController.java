@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Response;
 import com.example.elections.security.util.PasswordUtil;
 import com.example.elections.model.PasswordResetToken;
 import com.example.elections.model.Voter;
@@ -126,9 +127,11 @@ public class VoterController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
+        Voter voterId = voterService.getVoter(id)
+                .orElseThrow(()->new ResourceNotFound("Voter of id "+ id +" Not Found"));
         voterService.delete(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
     }
 
 }

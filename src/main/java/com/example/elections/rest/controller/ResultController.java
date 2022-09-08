@@ -19,20 +19,20 @@ public class ResultController {
 
     @GetMapping("/votes")
     public ResponseEntity<List<?>> getAllVotes() {
-        List<?> voteCandidateDtoList = voteCandidateService.getVotes();
-        return ResponseEntity.ok(voteCandidateDtoList);
+        List<?> votes = voteCandidateService.getVotes();
+        return ResponseEntity.ok(votes);
     }
 
     @GetMapping("/voters")
     public ResponseEntity<List<?>> getNumberOfVoters() {
-        List<?> voteCandidateDtoList = voteCandidateService.getAllVoters();
-        return ResponseEntity.ok(voteCandidateDtoList);
+        List<?> voters = voteCandidateService.getAllVoters();
+        return ResponseEntity.ok(voters);
     }
 
     @GetMapping("/revocations")
     public ResponseEntity<List<?>> getNumberOfRevocation() {
-        List<?> voteCandidateDtoList = voteCandidateService.getAllRevocations();
-        return ResponseEntity.ok(voteCandidateDtoList);
+        List<?> revocations = voteCandidateService.getAllRevocations();
+        return ResponseEntity.ok(revocations);
     }
 
 }

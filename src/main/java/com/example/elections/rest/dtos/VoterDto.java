@@ -38,8 +38,7 @@ public class VoterDto {
     @NotNull
     private Boolean voter_vote = false;
 
-    @NotNull
-    private Boolean revocation = false;
+
 
     private List<Role> roles = new ArrayList<>();
 
