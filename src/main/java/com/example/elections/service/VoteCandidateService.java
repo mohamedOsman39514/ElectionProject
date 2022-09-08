@@ -1,5 +1,6 @@
 package com.example.elections.service;
 
+import com.example.elections.handle.Data;
 import com.example.elections.model.VoteCandidate;
 import com.example.elections.repository.VoteCandidateRepository;
 import lombok.RequiredArgsConstructor;

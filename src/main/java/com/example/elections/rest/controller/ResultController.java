@@ -1,6 +1,8 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.handle.Data;
 import com.example.elections.service.VoteCandidateService;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,8 +27,8 @@ public class ResultController {
     }
 
     @GetMapping("/voters")
-    public ResponseEntity<List<?>> getNumberOfVoters() {
-        List<?> voters = voteCandidateService.getAllVoters();
+    public ResponseEntity<?> getNumberOfVoters() {
+        List<?> voters = Collections.singletonList(voteCandidateService.getAllVoters());
         return ResponseEntity.ok(voters);
     }
 
