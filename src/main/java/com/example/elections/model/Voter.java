@@ -2,10 +2,11 @@ package com.example.elections.model;
 
 import com.example.elections.model.common.JPA;
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +24,20 @@ public class Voter extends JPA{
     private String name;
 
     @Column(unique = true)
-    @Email( message = "not valid")
-//    @UniqueElements
     private String email;
 
     @Column
     private String password;
 
-    @Column
-    private Integer national_id;
+    @Column(unique = true)
+    private String nationalId;
 
     @Column
-    private Boolean voter_vote = false;
+    private Boolean voterVote = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "roles_id")
     private List<Role> roles = new ArrayList<>();
+//    private List<Role> roles = Arrays.asList(new Role(null,"user"));
 
 }

@@ -1,18 +1,17 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
 import com.example.elections.model.Vote;
 import com.example.elections.rest.dtos.VoteDto;
 import com.example.elections.rest.exception.ResourceNotFound;
 import com.example.elections.rest.mapper.VoteMapper;
 import com.example.elections.service.VoteService;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class VoteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createVote(@RequestBody VoteDto voteDto) {
+    public ResponseEntity<?> createVote(@Valid @RequestBody VoteDto voteDto) {
         Vote vote = voteMapper.toVote(voteDto);
         voteService.save(vote);
         return ResponseEntity.status(HttpStatus.CREATED).body(vote);

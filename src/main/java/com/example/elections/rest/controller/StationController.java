@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Station;
 import com.example.elections.rest.dtos.StationDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,14 +42,14 @@ public class StationController {
     }
 
     @PostMapping
-    public ResponseEntity<StationDto> createStation(@RequestBody StationDto stationDto) {
+    public ResponseEntity<StationDto> createStation(@Valid @RequestBody StationDto stationDto) {
         Station station = stationMapper.toStation(stationDto);
         stationService.save(station);
         return ResponseEntity.status(HttpStatus.CREATED).body(stationDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody StationDto stationDto)
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody StationDto stationDto)
             throws ResourceNotFound {
         Station station = stationMapper.toStation(stationDto);
         Station stationId = stationService.findById(id)

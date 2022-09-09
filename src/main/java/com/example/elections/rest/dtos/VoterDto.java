@@ -6,11 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,23 +20,22 @@ import java.util.List;
 @AllArgsConstructor
 public class VoterDto {
 
-    @NotNull
+    @NotEmpty(message = "please enter your name")
     private String name;
 
-    @NotNull
+    @Email( message = "not valid email")
+    @NotEmpty(message = "please enter email")
     private String email;
 
-    @NotNull
-    @Size(min = 8, message = "password should have at least 8 characters")
+    @Size(min = 8, message = "password at least 8 character")
+    @NotEmpty(message = "please enter password")
     private String password;
 
-    @NotNull
-    private Integer national_id;
+    @Size(min = 8, message = "national id must 14 digit")
+    @NotEmpty(message = "please enter your national id")
+    private String nationalId;
 
-    @NotNull
-    private Boolean voter_vote = false;
-
-
+    private Boolean voterVote = false;
 
     private List<Role> roles = new ArrayList<>();
 

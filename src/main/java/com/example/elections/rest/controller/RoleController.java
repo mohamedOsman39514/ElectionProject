@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Role;
 import com.example.elections.rest.dtos.RoleDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> create(@RequestBody RoleDto roleDTO) {
+    public ResponseEntity<RoleDto> create(@Valid @RequestBody RoleDto roleDTO) {
         Role role = roleMapper.toRole(roleDTO);
         roleService.save(role);
         return ResponseEntity.status(HttpStatus.CREATED).body(roleDTO);
@@ -48,7 +49,8 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> update(@PathVariable Long id,	@RequestBody RoleDto roleDTO) throws ResourceNotFound {
+    public ResponseEntity<RoleDto> update(@PathVariable Long id,@Valid	@RequestBody RoleDto roleDTO)
+            throws ResourceNotFound {
         Role role = roleMapper.toRole(roleDTO);
         Role roleId = roleService.findById(id)
                 .orElseThrow(()-> new ResourceNotFound("Role of id "+ id +" Not Found"));

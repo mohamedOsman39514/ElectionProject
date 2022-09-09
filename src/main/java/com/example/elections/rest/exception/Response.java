@@ -1,4 +1,4 @@
-package com.example.elections.handle;
+package com.example.elections.rest.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class PositionDto {
 
-    @NotEmpty
+    @NotEmpty(message = "must enter position name")
     private String name;
 
     @NotEmpty

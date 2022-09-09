@@ -1,6 +1,5 @@
 package com.example.elections.repository;
 
-import com.example.elections.handle.Data;
 import com.example.elections.model.VoteCandidate;
 import com.example.elections.model.Voter;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,11 +10,11 @@ import java.util.List;
 public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Long> {
 
     @Query(value = "SELECT  c.name, count(u) FROM Vote_Candidate u JOIN" +
-            " Candidates c ON c.id= u.candidate_id" +
+            " Candidates c ON c.id= u.candidateId" +
             " GROUP BY c.name", nativeQuery = true)
     List<?> findVotes();
 
-    @Query(value = "SELECT u.name FROM Voter u WHERE u.voter_vote = true")
+    @Query(value = "SELECT u.name FROM Voter u WHERE u.voterVote = true")
     List<?> findAllVoters();
 
 //    @Query(value = "SELECT json_build_object( 'name', u.name )" +

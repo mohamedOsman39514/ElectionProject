@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "positions")
@@ -18,7 +19,7 @@ public class Position extends JPA {
     @Column
     private String name;
 
-    @Column(name = "number_of_sets")
+    @Column
     private Integer sets;
 
     @ManyToOne(fetch = FetchType.EAGER)

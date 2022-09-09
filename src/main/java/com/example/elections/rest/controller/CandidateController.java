@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Candidate;
 import com.example.elections.rest.dtos.CandidateDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,7 +25,6 @@ public class CandidateController {
 
     @Autowired
     private CandidateService candidateService;
-
 
     @GetMapping
     public ResponseEntity<List<CandidateDto>> getAllCandidates() {
@@ -43,15 +42,14 @@ public class CandidateController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCandidate(@RequestBody CandidateDto candidateDto) {
+    public ResponseEntity<?> createCandidate(@Valid @RequestBody CandidateDto candidateDto) {
         Candidate candidate = candidateMapper.toCandidate(candidateDto);
-        candidate.setDate(LocalDate.now());
         candidateService.save(candidate);
         return ResponseEntity.status(HttpStatus.CREATED).body(candidate);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody CandidateDto candidateDto)
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody CandidateDto candidateDto)
             throws ResourceNotFound {
         Candidate candidate = candidateMapper.toCandidate(candidateDto);
         Candidate candidateId = candidateService.getCandidate(id)
@@ -62,8 +60,8 @@ public class CandidateController {
                 : candidateId.getNickname());
         candidateId.setElectionProcess(candidate.getElectionProcess()!=null ? candidate.getElectionProcess()
                 : candidateId.getElectionProcess());
-        candidateId.setNational_id(candidate.getNational_id()!=null ? candidate.getNational_id()
-                : candidateId.getNational_id());
+        candidateId.setNationalId(candidate.getNationalId()!=null ? candidate.getNationalId()
+                : candidateId.getNationalId());
         candidateId.setPosition(candidate.getPosition()!=null ? candidate.getPosition() : candidateId.getPosition());
         candidateId.setNumber(candidate.getNumber()!=null ? candidate.getNumber() : candidateId.getNumber());
         candidateService.save(candidateId);

@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Party;
 import com.example.elections.rest.dtos.PartyDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,14 +43,14 @@ public class PartyController {
     }
 
     @PostMapping
-    public ResponseEntity<PartyDto> createParty(@RequestBody PartyDto partyDto) {
+    public ResponseEntity<PartyDto> createParty(@Valid @RequestBody PartyDto partyDto) {
         Party party = partyMapper.toParty(partyDto);
         partyService.save(party);
         return ResponseEntity.status(HttpStatus.CREATED).body(partyDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody PartyDto partyDto)
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody PartyDto partyDto)
             throws ResourceNotFound {
         Party party = partyMapper.toParty(partyDto);
         Party partyId = partyService.getParty(id)

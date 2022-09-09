@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
+
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class RoleDto {
 
-    @NotEmpty
+    @NotEmpty(message = "please enter role name")
     private String name;
+
 }

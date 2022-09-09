@@ -6,6 +6,7 @@ import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Entity
@@ -20,10 +21,10 @@ public class ElectionProcess extends JPA {
     @Column
     private String name;
 
-    @Column(name = "start_date")
+    @Column
     private LocalDate startAt;
 
-    @Column(name = "end_date")
+    @Column
     private LocalDate endAt;
 
     @ManyToOne(fetch = FetchType.EAGER)

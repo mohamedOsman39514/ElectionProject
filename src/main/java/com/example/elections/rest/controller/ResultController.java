@@ -1,6 +1,5 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Data;
 import com.example.elections.service.VoteCandidateService;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;

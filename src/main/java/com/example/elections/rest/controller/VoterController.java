@@ -1,6 +1,7 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
+import com.example.elections.rest.exception.PSQLException;
 import com.example.elections.security.util.PasswordUtil;
 import com.example.elections.model.PasswordResetToken;
 import com.example.elections.model.Voter;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +39,9 @@ public class VoterController {
 
     @Autowired
     private PasswordUtil passwordUtil;
+
+    @Autowired
+    private PSQLException psqlException;
 
     @GetMapping
     public ResponseEntity<List<VoterDto>> getAllVoters() {
@@ -61,11 +66,16 @@ public class VoterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createVoter(@RequestBody VoterDto voterDto) {
-        Voter voter = voterMapper.toVoter(voterDto);
-        voter.setCreatedBy(voterDto.getName());
-        voterService.register(voter);
-        return ResponseEntity.status(HttpStatus.CREATED).body(voter);
+    public ResponseEntity<?> createVoter(@Valid @RequestBody VoterDto voterDto) {
+        try {
+            Voter voter = voterMapper.toVoter(voterDto);
+            voter.setCreatedBy(voterDto.getName());
+            voterService.register(voter);
+            return ResponseEntity.status(HttpStatus.CREATED).body(voter);
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                    new Response(psqlException.getError(ex)));
+        }
     }
 
     @PostMapping("/forgetPassword")
@@ -96,24 +106,6 @@ public class VoterController {
         return ResponseEntity.status(200).body("the password changed.....");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody VoterDto voterDto)
-            throws ResourceNotFound {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Voter user = voterService.findByEmail(email);
-
-        Voter voter = voterMapper.toVoter(voterDto);
-        Voter voterId = voterService.getVoter(id)
-                .orElseThrow(()->new ResourceNotFound("Voter of id "+ id +" Not Found"));
-        voterId.setName(voter.getName()!=null ? voter.getName() : voterId.getName());
-        voterId.setEmail(voter.getEmail()!=null ? voter.getEmail() : voterId.getEmail());
-        voterId.setNational_id(voter.getNational_id()!=null ? voter.getNational_id()
-                : voterId.getNational_id());
-        voterId.setUpdatedBy(user.getName());
-        voterService.save(voterId);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(voterId);
-    }
-
     @PatchMapping("/updatePassword/{newPassword}")
     public ResponseEntity<?> changeUserPassword(@RequestBody Voter voter,@PathVariable String newPassword) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -124,6 +116,24 @@ public class VoterController {
             return ResponseEntity.status(200).body("successfully updated......");
         }
         else return ResponseEntity.status(403).body("incorrect password");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody VoterDto voterDto)
+            throws ResourceNotFound {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Voter user = voterService.findByEmail(email);
+
+        Voter voter = voterMapper.toVoter(voterDto);
+        Voter voterId = voterService.getVoter(id)
+                .orElseThrow(()->new ResourceNotFound("Voter of id "+ id +" Not Found"));
+        voterId.setName(voter.getName()!=null ? voter.getName() : voterId.getName());
+        voterId.setEmail(voter.getEmail()!=null ? voter.getEmail() : voterId.getEmail());
+        voterId.setNationalId(voter.getNationalId()!=null ? voter.getNationalId()
+                : voterId.getNationalId());
+        voterId.setUpdatedBy(user.getName());
+        voterService.save(voterId);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(voterId);
     }
 
     @DeleteMapping("/{id}")

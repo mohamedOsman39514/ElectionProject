@@ -34,9 +34,9 @@ public class JPA implements Serializable {
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     @Column(name = "modified_date")
     @LastModifiedDate
-    private LocalDateTime updateDate;
+    private LocalDateTime updateAt;
 }

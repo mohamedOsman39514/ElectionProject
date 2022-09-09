@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.ElectionProcess;
 import com.example.elections.rest.dtos.ElectionProcessDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -43,14 +44,14 @@ public class ElectionProcessController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody ElectionProcessDto electionProcessDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody ElectionProcessDto electionProcessDto) {
         ElectionProcess electionProcess = electionProcessMapper.toElectionProcess(electionProcessDto);
         electionProcessService.save(electionProcess);
         return ResponseEntity.status(HttpStatus.CREATED).body(electionProcess);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody ElectionProcessDto electionProcessDto)
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid @RequestBody ElectionProcessDto electionProcessDto)
             throws ResourceNotFound {
 
         ElectionProcess electionProcess = electionProcessMapper.toElectionProcess(electionProcessDto);

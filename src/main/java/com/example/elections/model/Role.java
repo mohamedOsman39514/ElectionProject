@@ -1,22 +1,19 @@
 package com.example.elections.model;
 
 
+import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "role")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Role extends JPA {
 
     @Column
     private String name;

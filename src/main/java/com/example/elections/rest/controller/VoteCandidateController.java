@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Vote;
 import com.example.elections.model.VoteCandidate;
 import com.example.elections.model.Voter;
@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,19 +60,21 @@ public class VoteCandidateController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> createVoteCandidateDto(@RequestBody VoteCandidateDto voteCandidateDto,
+    public ResponseEntity<?> createVoteCandidateDto(@Valid @RequestBody VoteCandidateDto voteCandidateDto,
                                                     @PathVariable Long id) throws ResourceNotFound {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Voter voterEmail = voterService.findByEmail(email);
         List<?> c = voteCandidateService.getVoteId(id);
         Vote vote = voteService.getVote(id).get();
+
         if (!c.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Not Allowed"));
         }
-        if (!voterEmail.getVoter_vote()) {
+
+        if (!voterEmail.getVoterVote()) {
             if (voteCandidateDto.getRevocation()) {
                 vote.setRevocation(true);
-                voterEmail.setVoter_vote(true);
+                voterEmail.setVoterVote(true);
                 voteService.save(vote);
                 voterService.save(voterEmail);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("You Are Revocation"));
@@ -79,7 +82,7 @@ public class VoteCandidateController {
             voteCandidateDto.setVote(vote);
             VoteCandidate voteCandidate = voteCandidateMapper.toCandidate(voteCandidateDto);
             voteCandidateService.save(voteCandidate);
-            voterEmail.setVoter_vote(true);
+            voterEmail.setVoterVote(true);
             voterService.save(voterEmail);
             return ResponseEntity.status(HttpStatus.CREATED).body(voteCandidateDto);
         }

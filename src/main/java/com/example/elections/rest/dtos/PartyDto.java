@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PartyDto {
 
-    @NotEmpty
+    @NotEmpty(message = "must enter party name")
     private String name;
 
 }

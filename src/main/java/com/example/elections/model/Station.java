@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Station extends JPA {
 
-    @Column(name = "station_number")
+    @Column
     private Integer number;
 
     @ManyToOne(fetch = FetchType.EAGER)

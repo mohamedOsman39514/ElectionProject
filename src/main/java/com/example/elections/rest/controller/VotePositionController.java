@@ -1,6 +1,6 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.handle.Response;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.model.VotePosition;
 import com.example.elections.rest.dtos.VotePositionDto;
 import com.example.elections.rest.exception.ResourceNotFound;
@@ -12,9 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,14 +44,14 @@ public class VotePositionController {
     }
 
     @PostMapping
-    public ResponseEntity<VotePositionDto> createVotePositionDto(@RequestBody VotePositionDto votePositionDto) {
+    public ResponseEntity<VotePositionDto> createVotePositionDto(@Valid @RequestBody VotePositionDto votePositionDto) {
         VotePosition votePosition = votePositionMapper.toVotePosition(votePositionDto);
         votePositionService.save(votePosition);
         return ResponseEntity.status(HttpStatus.CREATED).body(votePositionDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,	@RequestBody VotePositionDto votePositionDto)
+    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody VotePositionDto votePositionDto)
             throws ResourceNotFound {
         VotePosition votePosition = votePositionMapper.toVotePosition(votePositionDto);
         VotePosition votePositionId = votePositionService.getVotePosition(id)

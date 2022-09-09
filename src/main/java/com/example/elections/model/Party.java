@@ -4,6 +4,7 @@ import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity

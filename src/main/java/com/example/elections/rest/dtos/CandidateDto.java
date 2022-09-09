@@ -23,23 +23,20 @@ public class CandidateDto {
     @Size(min = 2, message = "candidate name should have at least 2 characters")
     private String name;
 
-    @NotEmpty
+    @NotEmpty(message = "must enter nickname")
     private String nickname;
 
-    @NotEmpty
-    @Size(max = 14, message = "candidate national id should have at least 14 digit")
-    private Integer national_id;
+    @NotEmpty(message = "must enter national id")
+    @Size(max = 14, min = 14, message = "candidate national id should have at least 14 digit")
+    private String nationalId;
 
-    @NotEmpty
+    @NotEmpty(message = "must enter number")
     private Integer number;
 
-    @NotEmpty
-    private LocalDate date;
-
-    @NotEmpty
+    @NotEmpty(message = "enter position")
     private Position position;
 
-    @NotEmpty
+    @NotEmpty(message = "enter election process")
     private ElectionProcess electionProcess;
 
 }
