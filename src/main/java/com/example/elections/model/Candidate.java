@@ -19,7 +19,7 @@ public class Candidate extends JPA {
     @Column
     private String nickname;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 14)
     private String nationalId;
 
     @Column(unique = true)

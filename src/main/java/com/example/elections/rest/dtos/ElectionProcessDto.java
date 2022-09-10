@@ -20,13 +20,10 @@ public class ElectionProcessDto {
     @NotEmpty
     private String name;
 
-    @NotEmpty
     private LocalDate startAt;
 
-    @NotEmpty
     private LocalDate endAt;
 
-    @NotEmpty
     private Party party;
 
 }

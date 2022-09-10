@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -30,13 +30,13 @@ public class CandidateDto {
     @Size(max = 14, min = 14, message = "candidate national id should have at least 14 digit")
     private String nationalId;
 
-    @NotEmpty(message = "must enter number")
+    @NotNull(message = "must enter number")
     private Integer number;
 
-    @NotEmpty(message = "enter position")
+    @NotNull(message = "enter position")
     private Position position;
 
-    @NotEmpty(message = "enter election process")
+    @NotNull(message = "enter election process")
     private ElectionProcess electionProcess;
 
 }

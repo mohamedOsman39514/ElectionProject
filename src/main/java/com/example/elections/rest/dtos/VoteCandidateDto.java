@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -20,13 +20,13 @@ public class VoteCandidateDto {
 
     private Boolean revocation = false;
 
-    @NotEmpty
+    @NotNull
     private Position position;
 
-    @NotEmpty
+    @NotNull
     private Vote vote;
 
-    @NotEmpty
+    @NotNull
     private Candidate candidate;
 
 }

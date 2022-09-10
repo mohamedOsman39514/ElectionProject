@@ -1,7 +1,6 @@
 package com.example.elections.rest.controller;
 
 import com.example.elections.service.VoteCandidateService;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

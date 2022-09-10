@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.rest.exception.PSQLException;
 import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Candidate;
 import com.example.elections.rest.dtos.CandidateDto;
@@ -26,6 +27,9 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
+    @Autowired
+    private PSQLException psqlException;
+
     @GetMapping
     public ResponseEntity<List<CandidateDto>> getAllCandidates() {
         List<CandidateDto> candidateDtoList = candidateMapper.toCandidateDtos(candidateService.getAllCandidates());
@@ -36,34 +40,39 @@ public class CandidateController {
     public ResponseEntity<CandidateDto> getCandidateById(@PathVariable(value = "id") Long id)
             throws ResourceNotFound {
         Candidate candidate = candidateService.getCandidate(id)
-                .orElseThrow(()->new ResourceNotFound("The Candidate of id "+ id +" Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("The Candidate of id " + id + " Not Found"));
         CandidateDto candidateDto = candidateMapper.toCandidateDto(candidate);
         return ResponseEntity.ok(candidateDto);
     }
 
     @PostMapping
     public ResponseEntity<?> createCandidate(@Valid @RequestBody CandidateDto candidateDto) {
-        Candidate candidate = candidateMapper.toCandidate(candidateDto);
-        candidateService.save(candidate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(candidate);
+        try {
+            Candidate candidate = candidateMapper.toCandidate(candidateDto);
+            candidateService.save(candidate);
+            return ResponseEntity.status(HttpStatus.CREATED).body(candidate);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                    new Response(psqlException.getError(ex)));
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,@Valid	@RequestBody CandidateDto candidateDto)
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody CandidateDto candidateDto)
             throws ResourceNotFound {
         Candidate candidate = candidateMapper.toCandidate(candidateDto);
         Candidate candidateId = candidateService.getCandidate(id)
-                .orElseThrow(()-> new ResourceNotFound("Vote Candidate of id "+ id +" Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote Candidate of id " + id + " Not Found"));
 
-        candidateId.setName(candidate.getName()!=null ? candidate.getName() : candidateId.getName());
-        candidateId.setNickname(candidate.getNickname()!=null ? candidate.getNickname()
+        candidateId.setName(candidate.getName() != null ? candidate.getName() : candidateId.getName());
+        candidateId.setNickname(candidate.getNickname() != null ? candidate.getNickname()
                 : candidateId.getNickname());
-        candidateId.setElectionProcess(candidate.getElectionProcess()!=null ? candidate.getElectionProcess()
+        candidateId.setElectionProcess(candidate.getElectionProcess() != null ? candidate.getElectionProcess()
                 : candidateId.getElectionProcess());
-        candidateId.setNationalId(candidate.getNationalId()!=null ? candidate.getNationalId()
+        candidateId.setNationalId(candidate.getNationalId() != null ? candidate.getNationalId()
                 : candidateId.getNationalId());
-        candidateId.setPosition(candidate.getPosition()!=null ? candidate.getPosition() : candidateId.getPosition());
-        candidateId.setNumber(candidate.getNumber()!=null ? candidate.getNumber() : candidateId.getNumber());
+        candidateId.setPosition(candidate.getPosition() != null ? candidate.getPosition() : candidateId.getPosition());
+        candidateId.setNumber(candidate.getNumber() != null ? candidate.getNumber() : candidateId.getNumber());
         candidateService.save(candidateId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(candidateId);
     }
@@ -71,7 +80,7 @@ public class CandidateController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFound {
         Candidate candidateId = candidateService.getCandidate(id)
-                .orElseThrow(()-> new ResourceNotFound("Vote Candidate of id "+ id +" Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote Candidate of id " + id + " Not Found"));
         candidateService.delete(id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("deleted"));
     }

@@ -19,10 +19,10 @@ public class PositionDto {
     @NotEmpty(message = "must enter position name")
     private String name;
 
-    @NotEmpty
+//    @NotEmpty(message = "Enter Number of sets")
     private Integer sets;
 
-    @NotEmpty
+//    @NotEmpty
     private ElectionProcess electionProcess;
 
 

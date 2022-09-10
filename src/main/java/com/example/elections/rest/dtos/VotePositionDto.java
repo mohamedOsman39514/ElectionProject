@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,10 +17,10 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class VotePositionDto {
 
-    @NotEmpty
+    @NotNull
     private Position position;
 
-    @NotEmpty
+    @NotNull
     private Vote vote;
 
 }

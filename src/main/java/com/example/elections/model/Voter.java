@@ -4,9 +4,7 @@ import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public class Voter extends JPA{
     @Column
     private String password;
 
-    @Column(unique = true)
+    @Column(unique = true,length = 14)
     private String nationalId;
 
     @Column
