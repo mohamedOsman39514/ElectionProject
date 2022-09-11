@@ -23,7 +23,7 @@ public class VoteCandidateDto {
     @NotNull
     private Position position;
 
-    @NotNull
+//    @NotNull
     private Vote vote;
 
     @NotNull

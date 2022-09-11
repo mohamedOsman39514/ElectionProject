@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,13 +20,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class StationDto {
 
-    @NotEmpty
+    @NotNull
     private Integer number;
 
     @NotNull
     private ElectionProcess electionProcess;
 
     @NotNull
-    private Voter voter;
-
+    private List<Voter> voters = new ArrayList<>();
 }

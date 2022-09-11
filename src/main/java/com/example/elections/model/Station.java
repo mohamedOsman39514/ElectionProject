@@ -4,6 +4,8 @@ import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "stations")
@@ -20,7 +22,7 @@ public class Station extends JPA {
     @ManyToOne(fetch = FetchType.EAGER)
     private ElectionProcess electionProcess;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Voter voter;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Voter> voters = new ArrayList<>();
 
 }

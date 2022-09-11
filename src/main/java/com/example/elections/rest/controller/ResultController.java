@@ -1,6 +1,7 @@
 package com.example.elections.rest.controller;
 
 import com.example.elections.service.VoteCandidateService;
+import com.example.elections.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ import java.util.List;
 public class ResultController {
     @Autowired
     private VoteCandidateService voteCandidateService;
+
+    @Autowired
+    private VoteService voteService;
 
     @GetMapping("/votes")
     public ResponseEntity<List<?>> getAllVotes() {
@@ -35,5 +39,11 @@ public class ResultController {
         List<?> revocations = voteCandidateService.getAllRevocations();
         return ResponseEntity.ok(revocations);
     }
+
+//    @GetMapping("/voter")
+//    public ResponseEntity<List<?>> findVoterInStation() {
+//        List<?> revocations = voteService.findVoterInStation();
+//        return ResponseEntity.ok(revocations);
+//    }
 
 }

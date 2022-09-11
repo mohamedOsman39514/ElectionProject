@@ -1,14 +1,18 @@
 package com.example.elections.rest.controller;
 
 import com.example.elections.model.Vote;
+import com.example.elections.model.Voter;
 import com.example.elections.rest.dtos.VoteDto;
 import com.example.elections.rest.exception.ResourceNotFound;
+import com.example.elections.rest.exception.Response;
 import com.example.elections.rest.mapper.VoteMapper;
 import com.example.elections.service.VoteService;
+import com.example.elections.service.VoterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +28,9 @@ public class VoteController {
 
     @Autowired
     private VoteService voteService;
+
+    @Autowired
+    private VoterService voterService;
 
     @GetMapping
     public ResponseEntity<List<VoteDto>> getAllVotes() {
@@ -43,8 +50,19 @@ public class VoteController {
     @PostMapping
     public ResponseEntity<?> createVote(@Valid @RequestBody VoteDto voteDto) {
         Vote vote = voteMapper.toVote(voteDto);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Voter voterEmail = voterService.findByEmail(email);
+        List<?> e = voteService.findVoterInStation(voteDto.getStation().getId(), voterEmail.getId());
+        System.out.println(e + " \n"+ email);
+        if(!e.contains(email)) return ResponseEntity.status(HttpStatus.CREATED).body(
+                new Response("Sorry "+ voterEmail.getName() +", you are not in this station")
+        );
         voteService.save(vote);
         return ResponseEntity.status(HttpStatus.CREATED).body(vote);
+
+
+
+
     }
 //
 //    @PutMapping("/{id}")

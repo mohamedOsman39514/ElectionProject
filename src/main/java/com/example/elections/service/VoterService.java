@@ -1,7 +1,9 @@
 package com.example.elections.service;
 
 import com.example.elections.model.Role;
+import com.example.elections.model.Station;
 import com.example.elections.model.Voter;
+import com.example.elections.repository.StationRepository;
 import com.example.elections.repository.VoterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,14 @@ public class VoterService implements UserDetailsService {
     @Autowired
     private VoterRepository voterRepository;
 
+    @Autowired
+    private StationRepository stationRepository;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Voter voter = voterRepository.findByEmail(username);
+        Station station = stationRepository.findById(1L).get();
 
         if (voter == null) {
             throw new UsernameNotFoundException("No user found with username: " + username);
@@ -48,10 +54,10 @@ public class VoterService implements UserDetailsService {
         return authorities;
     }
 
+
     public Voter register(Voter voter) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(voter.getPassword());
-        System.out.println("encodePassword|  "+encodePassword);
         voter.setPassword(encodePassword);
         return voterRepository.save(voter);
     }
@@ -60,7 +66,6 @@ public class VoterService implements UserDetailsService {
         Voter voter = voterRepository.findByEmail(email);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(password);
-//        System.out.println("encodePassword|  "+encodePassword);
         voter.setPassword(encodePassword);
         voterRepository.save(voter);
     }

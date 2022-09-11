@@ -1,6 +1,7 @@
 package com.example.elections.config;
 
 
+import com.example.elections.model.Voter;
 import com.example.elections.security.jwt.JwtFilter;
 import com.example.elections.service.VoterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,6 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtFilter jwtFilter;
+
+    @Autowired
+    private VoterService voterService;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -54,6 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//
+//        Voter voterEmail = voterService.findByEmail(email);
+
         http.csrf()
                 .disable()
                 .authorizeRequests()
@@ -63,8 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(AUTH_WHITELIST)
                 .permitAll()
-//                .antMatchers("/api/v2/employees").hasAnyAuthority("manger","user")
-//                .antMatchers("/api/v1/departments").hasAnyAuthority("user")
+                .antMatchers("/voteCandidate/{id}").hasAnyAuthority("admin")
+
+//                .antMatchers("/candidate/{id}").hasAnyAuthority("admin")
                 .anyRequest()
                 .authenticated()
                 .and()

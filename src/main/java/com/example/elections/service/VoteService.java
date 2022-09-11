@@ -33,4 +33,9 @@ public class VoteService {
         return voteRepository.save(vote);
     }
 
+    public List<?> findVoterInStation(Long stationId, Long voterId) {
+        return voteRepository.findVoterInStation(stationId, voterId);
+    }
+
+
 }
