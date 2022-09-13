@@ -1,5 +1,6 @@
 package com.example.elections.rest.controller;
 
+import com.example.elections.model.Photo;
 import com.example.elections.rest.exception.PSQLException;
 import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Candidate;
@@ -7,11 +8,14 @@ import com.example.elections.rest.dtos.CandidateDto;
 import com.example.elections.rest.exception.ResourceNotFound;
 import com.example.elections.rest.mapper.CandidateMapper;
 import com.example.elections.service.CandidateService;
+import com.example.elections.service.PhotoService;
+import com.example.elections.utils.ImageUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,6 +33,9 @@ public class CandidateController {
 
     @Autowired
     private PSQLException psqlException;
+
+    @Autowired
+    private PhotoService photoService;
 
     @GetMapping
     public ResponseEntity<List<CandidateDto>> getAllCandidates() {
@@ -71,8 +78,10 @@ public class CandidateController {
                 : candidateId.getElectionProcess());
         candidateId.setNationalId(candidate.getNationalId() != null ? candidate.getNationalId()
                 : candidateId.getNationalId());
-        candidateId.setPosition(candidate.getPosition() != null ? candidate.getPosition() : candidateId.getPosition());
-        candidateId.setNumber(candidate.getNumber() != null ? candidate.getNumber() : candidateId.getNumber());
+        candidateId.setPosition(candidate.getPosition() != null ? candidate.getPosition()
+                : candidateId.getPosition());
+        candidateId.setNumber(candidate.getNumber() != null ? candidate.getNumber()
+                : candidateId.getNumber());
         candidateService.save(candidateId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(candidateId);
     }

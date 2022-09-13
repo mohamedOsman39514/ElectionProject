@@ -1,4 +1,4 @@
-package com.example.elections.security.util;
+package com.example.elections.security;
 
 import com.example.elections.model.PasswordResetToken;
 import com.example.elections.service.PasswordTokenService;

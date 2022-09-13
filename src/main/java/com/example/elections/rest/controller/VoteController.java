@@ -12,9 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -39,30 +41,32 @@ public class VoteController {
     }
 
     @GetMapping("/{id}")
+//    @PreAuthorize("# authentication.principal.id==1")
     public ResponseEntity<VoteDto> getVoteDto(@PathVariable Long id)
             throws ResourceNotFound {
         Vote vote = voteService.getVote(id)
-                .orElseThrow(() -> new ResourceNotFound("Vote of id "+ id +" Not Found"));
+                .orElseThrow(() -> new ResourceNotFound("Vote of id " + id + " Not Found"));
         VoteDto voteDto = voteMapper.toVoteDto(vote);
         return ResponseEntity.ok(voteDto);
     }
 
     @PostMapping
     public ResponseEntity<?> createVote(@Valid @RequestBody VoteDto voteDto) {
-        Vote vote = voteMapper.toVote(voteDto);
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Voter voterEmail = voterService.findByEmail(email);
-        List<?> e = voteService.findVoterInStation(voteDto.getStation().getId(), voterEmail.getId());
-        System.out.println(e + " \n"+ email);
-        if(!e.contains(email)) return ResponseEntity.status(HttpStatus.CREATED).body(
-                new Response("Sorry "+ voterEmail.getName() +", you are not in this station")
-        );
-        voteService.save(vote);
-        return ResponseEntity.status(HttpStatus.CREATED).body(vote);
-
-
-
-
+        try {
+            Vote vote = voteMapper.toVote(voteDto);
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            Voter voterEmail = voterService.findByEmail(email);
+            List<?> e = voteService.findVoterInStation(voteDto.getStation().getId(), voterEmail.getId());
+            System.out.println(e + " \n" + email);
+            if (!e.contains(email)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    new Response("Sorry " + voterEmail.getName() + ", you are not in this station"));
+            else if (voterEmail.getVoterVote()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                    new Response("You are voted before "));
+            voteService.save(vote);
+            return ResponseEntity.status(HttpStatus.CREATED).body(vote);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 //
 //    @PutMapping("/{id}")

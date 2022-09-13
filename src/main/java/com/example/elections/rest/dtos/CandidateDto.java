@@ -1,6 +1,7 @@
 package com.example.elections.rest.dtos;
 
 import com.example.elections.model.ElectionProcess;
+import com.example.elections.model.Photo;
 import com.example.elections.model.Position;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

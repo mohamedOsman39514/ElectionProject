@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -66,15 +68,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/login","/user/register","/role")
+                .antMatchers("/login","/user/register","/role","/photo/get/image/{name}")
                 .permitAll()
                 .antMatchers("/files/All")
                 .permitAll()
                 .antMatchers(AUTH_WHITELIST)
                 .permitAll()
                 .antMatchers("/voteCandidate/{id}").hasAnyAuthority("admin")
-
-//                .antMatchers("/candidate/{id}").hasAnyAuthority("admin")
+//                .antMatchers("/vote").hasAnyAuthority("admin")
                 .anyRequest()
                 .authenticated()
                 .and()

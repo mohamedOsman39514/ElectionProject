@@ -2,7 +2,7 @@ package com.example.elections.rest.controller;
 
 import com.example.elections.rest.exception.Response;
 import com.example.elections.rest.exception.PSQLException;
-import com.example.elections.security.util.PasswordUtil;
+import com.example.elections.security.PasswordUtil;
 import com.example.elections.model.PasswordResetToken;
 import com.example.elections.model.Voter;
 import com.example.elections.rest.dtos.VoterDto;
@@ -50,6 +50,7 @@ public class VoterController {
     }
 
     @GetMapping("/email/{email}")
+//    @PreAuthorize("returnObject.email == principal.email")
     public ResponseEntity<?> findByEmail(@PathVariable String email){
         Voter voter = voterService.findByEmail(email);
         if (voter == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
@@ -57,7 +58,7 @@ public class VoterController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getVoter(@PathVariable Long id)
+    public ResponseEntity<?> getVoter(@PathVariable("id") Long id)
             throws ResourceNotFound {
         Voter voter = voterService.getVoter(id)
                 .orElseThrow(() -> new ResourceNotFound("Voter Position of id "+ id +" Not Found"));

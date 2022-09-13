@@ -1,4 +1,4 @@
-package com.example.elections.security.util;//package com.example.CRUD.with.postgresql.config.util;
+package com.example.elections.utils;//package com.example.CRUD.with.postgresql.config.util;
 //
 //import com.example.CRUD.with.postgresql.model.Employee;
 //import org.springframework.mail.SimpleMailMessage;
