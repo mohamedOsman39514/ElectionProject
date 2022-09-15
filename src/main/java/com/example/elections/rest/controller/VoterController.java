@@ -10,6 +10,8 @@ import com.example.elections.rest.exception.ResourceNotFound;
 import com.example.elections.rest.mapper.VoterMapper;
 import com.example.elections.service.PasswordTokenService;
 import com.example.elections.service.VoterService;
+import com.example.elections.utils.email.EmailDetails;
+import com.example.elections.utils.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,11 @@ public class VoterController {
 
     @Autowired
     private PSQLException psqlException;
+
+    @Autowired
+    private EmailService emailService;
+
+
 
     @GetMapping
     public ResponseEntity<List<VoterDto>> getAllVoters() {
@@ -80,6 +87,7 @@ public class VoterController {
     }
 
     @PostMapping("/forgetPassword")
+//    @EventListener(ApplicationReadyEvent.class)
     public ResponseEntity<?> forgetPassword(@RequestBody Voter voter, HttpServletRequest request )
             throws ResourceNotFound {
         Voter user = voterService.findByEmail(voter.getEmail());
@@ -88,7 +96,16 @@ public class VoterController {
         }
         String token = UUID.randomUUID().toString();
         passwordTokenService.createPasswordResetTokenForUser(user, token);
-        return ResponseEntity.ok().body(token);
+        String appUrl = "http://"+ request.getServerName() + ":"
+                + request.getServerPort() +"/user/resetpassword/"+token;
+        EmailDetails details = new EmailDetails();
+        details.setRecipient(user.getEmail());
+        details.setSubject("Reset your password");
+        details.setMsgBody("Forgot your password?" +
+                " Submit a PATCH request with your new password and to:" + appUrl +
+                "\nIf you didn't forget your password, please ignore this email!");
+        String status = emailService.sendSimpleMail(details);
+        return ResponseEntity.ok().body(new Response("Mail sent Successfully"));
     }
 
     @PutMapping ("/resetpassword/{resetToken}")

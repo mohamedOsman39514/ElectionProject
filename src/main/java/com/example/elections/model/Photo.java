@@ -1,5 +1,6 @@
 package com.example.elections.model;
 
+import com.example.elections.model.common.JPA;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,11 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Photo {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Photo extends JPA {
 
     @Column(name = "name")
     private String name;

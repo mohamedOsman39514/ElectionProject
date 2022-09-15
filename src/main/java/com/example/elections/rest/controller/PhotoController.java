@@ -5,7 +5,7 @@ import com.example.elections.model.Photo;
 import com.example.elections.rest.exception.ResourceNotFound;
 import com.example.elections.rest.exception.Response;
 import com.example.elections.service.CandidateService;
-import com.example.elections.utils.ImageUtility;
+import com.example.elections.utils.image.ImageUtility;
 import com.example.elections.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

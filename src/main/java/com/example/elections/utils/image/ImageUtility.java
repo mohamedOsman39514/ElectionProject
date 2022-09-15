@@ -1,4 +1,4 @@
-package com.example.elections.utils;
+package com.example.elections.utils.image;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Objects;
 
 public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Long> {
 
@@ -17,9 +18,9 @@ public interface VoteCandidateRepository extends JpaRepository<VoteCandidate, Lo
     @Query(value = "SELECT u.name FROM Voter u WHERE u.voterVote = true")
     List<?> findAllVoters();
 
-//    @Query(value = "SELECT json_build_object( 'name', u.name )" +
+//    @Query(value = "SELECT json_build_object('name', u.name )" +
 //            "FROM Voter u WHERE u.voter_vote = true",nativeQuery = true)
-//    List<?> findAllVoters();
+//    List<Objects> findAllVoters();
 
     @Query(value = "SELECT count(u) FROM Vote u WHERE u.revocation = true")
     List<?> findAllRevocation();

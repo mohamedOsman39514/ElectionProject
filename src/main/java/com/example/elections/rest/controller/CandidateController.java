@@ -1,6 +1,5 @@
 package com.example.elections.rest.controller;
 
-import com.example.elections.model.Photo;
 import com.example.elections.rest.exception.PSQLException;
 import com.example.elections.rest.exception.Response;
 import com.example.elections.model.Candidate;
@@ -9,13 +8,11 @@ import com.example.elections.rest.exception.ResourceNotFound;
 import com.example.elections.rest.mapper.CandidateMapper;
 import com.example.elections.service.CandidateService;
 import com.example.elections.service.PhotoService;
-import com.example.elections.utils.ImageUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
